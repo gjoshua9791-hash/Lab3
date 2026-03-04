@@ -1,37 +1,18 @@
-import { useState } from "react";
+
 import { ActivityIndicator, Button, Image, StyleSheet, Text, TextInput, View } from "react-native";
-import { fetchPokemonByName } from "@/src/services/pokemonApi";
-import type { Pokemon } from "@/src/models/Pokemon";
+import { usePokemonController } from "@/src/controllers/usePokemonController";
 
 export default function HomeScreen() {
-  const [pokemonName, setPokemonName] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
+  const controller = usePokemonController();
 
-  async function handleSearch() {
-
-    setLoading(true);
-    setError("");
-    setPokemon(null);
-
-    try{
-      const data = await fetchPokemonByName(pokemonName);
-      setPokemon(data);
-    }
-    catch(error: any){
-      setError(error.message);
-    }
-    finally{
-      setLoading(false);
-    }
-  }
-
-  const displayName = pokemon?.name ?? "";
-  const image = pokemon?.image ?? "";
-  const types = pokemon?.types ?? [];
-  const abilities = pokemon?.abilities ?? [];
-  const moves = pokemon?.moves ?? [];
+  const {
+    pokemonName,
+    setPokemonName,
+    pokemon,
+    loading,
+    error,
+    search,
+  } = controller;
 
 
   return (
@@ -47,7 +28,7 @@ export default function HomeScreen() {
         autoCorrect={false}
       />
 
-      <Button title="Get Pokemon" onPress={handleSearch} />
+      <Button title="Get Pokemon" onPress={search} />
       {loading && (
         <View style={{ alignItems: "center", gap: 6}}>
           <ActivityIndicator />
@@ -56,14 +37,18 @@ export default function HomeScreen() {
         {!!error && <Text style={styles.error}>{error}</Text>}  
         {pokemon && (
            <View style={styles.resultCard}>
-            <Text style={styles.pokeName}>{displayName}</Text>
-          {!!image && (<Image source={{ uri: image}} style={styles.image} resizeMode="contain" />)}
+            <Text style={styles.pokeName}>{pokemon.name}</Text>
 
-          <Text>{types.join(", ")}</Text>
+          <Image source={{ uri: pokemon.image}} style={styles.image} resizeMode="contain" />
 
-          <Text>{abilities.join(", ")}</Text>
+          <Text style={styles.label}>Types:</Text>
+          <Text>{pokemon.types.join(", ")}</Text>
 
-          <Text>{moves.join(", ")}</Text>
+          <Text style={styles.label}>Abilities:</Text>
+          <Text>{pokemon.abilities.join(", ")}</Text>
+
+          <Text style={styles.label}>Moves:</Text>
+          <Text>{pokemon.moves.join(", ")}</Text>
           </View>
           )}
     </View>

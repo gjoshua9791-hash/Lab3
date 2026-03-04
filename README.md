@@ -67,3 +67,5 @@ Join our community of developers creating universal apps.
 13) It takes an input which is the pokemons name, outputs the pokemons data, and throws errors depending on what the issue is from what it receives. 
 14) A builder pattern here buys me an easier and simpler way to parse through the JSON raw data and pick out only the things I need as well as it becomes it's own file so its not all in the index.tsx file.
 15) A model is safer than raw API JSON because it compiles everything and and has catches in place for any errors. 
+16) The controller now owns the loading and error logic as well as the input validation. It also fetches from the API and contains the states.
+17) The controller is better than a view for input validation because the view should only be focused on the UI and what's displayed, not how to handle errors and data.

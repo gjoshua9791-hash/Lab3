@@ -56,3 +56,5 @@ Join our community of developers creating universal apps.
 2) The state here is pokemonName and that is the pokemon's name that is inputted by the user as we can see useState("") meaning it is empty by default and populates when the user enters a pokemons name.
 3) When fetch receives a non-200 response it still executes but it checks if response.ok is valid and then it'l throw an error based on the status.
 4) We shouldn't always assume JSON has the fields we want because the API can change and have missing fields.
+5) App truth right now lives in React's state, so it would be pokemonName, error, loading, and pokemon as these are what are being displayed on the UI.
+6) If we forget to set loading=false on failure then it continues loading forever even when the pokemon has been fetched.

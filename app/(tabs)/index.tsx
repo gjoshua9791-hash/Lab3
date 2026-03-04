@@ -1,28 +1,39 @@
 import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { ActivityIndicator, Button, StyleSheet, Text, TextInput, View } from "react-native";
 
 export default function HomeScreen() {
   const [pokemonName, setPokemonName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [pokemon, setPokemon] = useState<any | null>(null);
 
   async function handleSearch() {
     const q = pokemonName.trim().toLowerCase();
 
     if(!q){
-      console.log("Please enter a Pokemon name.");
+      setPokemon(null)
+      setError("Please enter a Pokemon name.");
       return;
     }
+
+    setLoading(true);
+    setError("");
+    setPokemon(null);
 
     try{
       const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${q}`);
       if(!response.ok ){
-        console.log("Pokemon not found. Status:", response.status);
+        setError("Pokemon not found. Status: " + response.status);
         return;
       }
       const data = await response.json();
-      console.log("Pokemon data:", data);
+      setPokemon(data);
     }
     catch(error){
-      console.error("Error fetching Pokemon data:", error);
+      setError("Error fetching Pokemon data:" + error);
+    }
+    finally{
+      setLoading(false);
     }
   }
 
@@ -40,6 +51,13 @@ export default function HomeScreen() {
       />
 
       <Button title="Get Pokemon" onPress={handleSearch} />
+      {loading && (
+        <View style={{ alignItems: "center", gap: 6}}>
+          <ActivityIndicator />
+          <Text>Loading...</Text>
+          </View>)}
+        {!!error && <Text style={styles.error}>{error}</Text>}  
+        {pokemon && <Text>Found your Pokemon!</Text>}
     </View>
   );
 }
@@ -63,5 +81,9 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 8,
     padding: 10,
+  },
+  error: {
+    color: "red",
+    fontWeight: "600",
   },
 });

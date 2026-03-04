@@ -63,3 +63,5 @@ Join our community of developers creating universal apps.
 9) 3 responsibilities currently inside index.tsx are ui rendering, data fetching, and handling laoding, errors, and pokemon. 
 10) If i wanted to reuse the Pokemon API logic in another screen I would probably make a new file and and moves that code over and connect that file to index so that it routes to the new file when calling on the Pokemon API.
 11) If I wanted to test the API parsing logic I think I could pen up the web developer tools and check the console logs or something similar and see what is being called when I enter a pokemon name.
+12) Its a win that service doesn't import React because it makes it resuable and it makes for a simple file that only has one task.
+13) It takes an input which is the pokemons name, outputs the pokemons data, and throws errors depending on what the issue is from what it receives. 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ActivityIndicator, Button, Image, StyleSheet, Text, TextInput, View } from "react-native";
+import { fetchPokemonByName } from "@/src/services/pokemonApi";
 
 export default function HomeScreen() {
   const [pokemonName, setPokemonName] = useState("");
@@ -8,29 +9,17 @@ export default function HomeScreen() {
   const [pokemon, setPokemon] = useState<any | null>(null);
 
   async function handleSearch() {
-    const q = pokemonName.trim().toLowerCase();
-
-    if(!q){
-      setPokemon(null)
-      setError("Please enter a Pokemon name.");
-      return;
-    }
 
     setLoading(true);
     setError("");
     setPokemon(null);
 
     try{
-      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${q}`);
-      if(!response.ok ){
-        setError("Pokemon not found. Status: " + response.status);
-        return;
-      }
-      const data = await response.json();
+      const data = await fetchPokemonByName(pokemonName);
       setPokemon(data);
     }
-    catch(error){
-      setError("Error fetching Pokemon data:" + error);
+    catch(error: any){
+      setError(error.message);
     }
     finally{
       setLoading(false);

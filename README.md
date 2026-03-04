@@ -48,3 +48,9 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+## Lab 3 Questions
+
+1) The file acting as my main screen currently is the index.tsx file that's in (tabs).
+2) The state here is pokemonName and that is the pokemon's name that is inputted by the user as we can see useState("") meaning it is empty by default and populates when the user enters a pokemons name.

@@ -60,3 +60,6 @@ Join our community of developers creating universal apps.
 6) If we forget to set loading=false on failure then it continues loading forever even when the pokemon has been fetched.
 7) The difference between rendering a raw JSON and and a shaped object is that the raw JSON can contain data we don't need and a shaped object will come only with what we need from it so it's more optimized to our needs.
 8)  The javascript and styles are responsible for the UI and what is respsonible for the logic is the API and handling the data, loading, and errors. 
+9) 3 responsibilities currently inside index.tsx are ui rendering, data fetching, and handling laoding, errors, and pokemon. 
+10) If i wanted to reuse the Pokemon API logic in another screen I would probably make a new file and and moves that code over and connect that file to index so that it routes to the new file when calling on the Pokemon API.
+11) If I wanted to test the API parsing logic I think I could pen up the web developer tools and check the console logs or something similar and see what is being called when I enter a pokemon name.

@@ -58,3 +58,5 @@ Join our community of developers creating universal apps.
 4) We shouldn't always assume JSON has the fields we want because the API can change and have missing fields.
 5) App truth right now lives in React's state, so it would be pokemonName, error, loading, and pokemon as these are what are being displayed on the UI.
 6) If we forget to set loading=false on failure then it continues loading forever even when the pokemon has been fetched.
+7) The difference between rendering a raw JSON and and a shaped object is that the raw JSON can contain data we don't need and a shaped object will come only with what we need from it so it's more optimized to our needs.
+8)  The javascript and styles are responsible for the UI and what is respsonible for the logic is the API and handling the data, loading, and errors. 

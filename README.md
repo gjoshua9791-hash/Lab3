@@ -65,3 +65,5 @@ Join our community of developers creating universal apps.
 11) If I wanted to test the API parsing logic I think I could pen up the web developer tools and check the console logs or something similar and see what is being called when I enter a pokemon name.
 12) Its a win that service doesn't import React because it makes it resuable and it makes for a simple file that only has one task.
 13) It takes an input which is the pokemons name, outputs the pokemons data, and throws errors depending on what the issue is from what it receives. 
+14) A builder pattern here buys me an easier and simpler way to parse through the JSON raw data and pick out only the things I need as well as it becomes it's own file so its not all in the index.tsx file.
+15) A model is safer than raw API JSON because it compiles everything and and has catches in place for any errors. 

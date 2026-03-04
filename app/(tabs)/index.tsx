@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { ActivityIndicator, Button, Image, StyleSheet, Text, TextInput, View } from "react-native";
 import { fetchPokemonByName } from "@/src/services/pokemonApi";
+import type { Pokemon } from "@/src/models/Pokemon";
 
 export default function HomeScreen() {
   const [pokemonName, setPokemonName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [pokemon, setPokemon] = useState<any | null>(null);
+  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
 
   async function handleSearch() {
 
@@ -27,10 +28,10 @@ export default function HomeScreen() {
   }
 
   const displayName = pokemon?.name ?? "";
-  const image = pokemon?.sprites?.front_default ?? "";
-  const types = pokemon?.types.map((t:any) => t?.type?.name).filter(Boolean) ?? [];
-  const abilities = pokemon?.abilities?.map((a: any) => a?.ability.name).filter(Boolean) ?? [];
-  const moves = pokemon?.moves?.map((m:any) => m?.move?.name).filter(Boolean).slice(0,5) ?? [];
+  const image = pokemon?.image ?? "";
+  const types = pokemon?.types ?? [];
+  const abilities = pokemon?.abilities ?? [];
+  const moves = pokemon?.moves ?? [];
 
 
   return (
@@ -58,13 +59,10 @@ export default function HomeScreen() {
             <Text style={styles.pokeName}>{displayName}</Text>
           {!!image && (<Image source={{ uri: image}} style={styles.image} resizeMode="contain" />)}
 
-          <Text style={styles.label}>Types:</Text>
           <Text>{types.join(", ")}</Text>
 
-          <Text style={styles.label}>Abilities:</Text>
           <Text>{abilities.join(", ")}</Text>
 
-          <Text style={styles.label}>Moves:</Text>
           <Text>{moves.join(", ")}</Text>
           </View>
           )}
@@ -99,7 +97,7 @@ const styles = StyleSheet.create({
   resultCard: {
     width: "100%",
     borderWidth: 1,
-    borderColor: "ddd",
+    borderColor: "#ddd",
     borderRadius: 12,
     padding: 12,
     gap: 8,

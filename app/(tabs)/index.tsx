@@ -4,9 +4,26 @@ import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 export default function HomeScreen() {
   const [pokemonName, setPokemonName] = useState("");
 
-  function handleSearch() {
-    const q = pokemonName.trim();
-    console.log("Search pressed:", q);
+  async function handleSearch() {
+    const q = pokemonName.trim().toLowerCase();
+
+    if(!q){
+      console.log("Please enter a Pokemon name.");
+      return;
+    }
+
+    try{
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${q}`);
+      if(!response.ok ){
+        console.log("Pokemon not found. Status:", response.status);
+        return;
+      }
+      const data = await response.json();
+      console.log("Pokemon data:", data);
+    }
+    catch(error){
+      console.error("Error fetching Pokemon data:", error);
+    }
   }
 
   return (

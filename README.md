@@ -54,3 +54,5 @@ Join our community of developers creating universal apps.
 
 1) The file acting as my main screen currently is the index.tsx file that's in (tabs).
 2) The state here is pokemonName and that is the pokemon's name that is inputted by the user as we can see useState("") meaning it is empty by default and populates when the user enters a pokemons name.
+3) When fetch receives a non-200 response it still executes but it checks if response.ok is valid and then it'l throw an error based on the status.
+4) We shouldn't always assume JSON has the fields we want because the API can change and have missing fields.

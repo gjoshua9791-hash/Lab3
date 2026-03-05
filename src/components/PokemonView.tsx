@@ -1,5 +1,5 @@
-import React from "react";
-import { ActivityIndicator, Button, Image, Pressable, StyleSheet, Text, TextInput, View, } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { ActivityIndicator, Animated, Button, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View, } from "react-native";
 import type { Pokemon } from "@/src/models/Pokemon";
 
 type Props = {
@@ -19,8 +19,37 @@ type Props = {
 };
 
 export function PokemonView(props: Props) {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const spinAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (!props.pokemon) return;
+
+    fadeAnim.setValue(0);
+    spinAnim.setValue(0);
+
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 400,
+        useNativeDriver: true,
+      }),
+      Animated.timing(spinAnim, {
+        toValue: 1,
+        duration: 900,
+        useNativeDriver: true,
+      }),
+    ]) .start();
+    }, [props.pokemon]);
+
+    const rotate = spinAnim.interpolate({
+      inputRange: [0,1],
+      outputRange: ["0deg", "1080deg"],
+    });
+    
+
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>Pokemon Search</Text>
 
       <TextInput
@@ -41,7 +70,7 @@ export function PokemonView(props: Props) {
         {!!props.error && <Text style={styles.error}>{props.error}</Text>}  
         {props.pokemon && (
             <>
-           <View style={styles.resultCard}>
+           <Animated.View style={[styles.resultCard, { opacity: fadeAnim, transform: [{rotate}],},]}>
             <Text style={styles.pokeName}>{props.pokemon.name}</Text>
 
           <Image source={{ uri: props.pokemon.image}} style={styles.image} resizeMode="contain" />
@@ -61,7 +90,7 @@ export function PokemonView(props: Props) {
                 onPress={props.onToggleFavorite}
                 />
           </View>
-        </View>
+        </Animated.View>
 
     <View style={styles.favoritesSection}>
       <Text style={styles.label}>Favorites:</Text>
@@ -86,7 +115,7 @@ export function PokemonView(props: Props) {
     </View>
   </>
 )}
- </View>
+ </ScrollView>
     );
     }
 
@@ -94,7 +123,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     padding: 20,
     gap: 12,
   },

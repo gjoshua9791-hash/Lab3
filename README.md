@@ -75,3 +75,5 @@ Join our community of developers creating universal apps.
 21) Derived state for isFavorite means that its created from both pokemon and favorites so it's derived from the two. 
 22) Persistence is implemented as a service because it doesn;t contain any UI logic, rather it works behind the scenes to keep track of favorites just like the API works behind the scenes and provides data.
 23) The difference between a state and a persisted state is that a state lives in the memory and a persisted state is saved to the storage so it remains even after a refresh/restart.
+24) The animation belongs in the view layer becauser we're messing with the UI and nothing behind the scenes.
+25) The useEffect that's connected to the props.pokemon is what triggers the animation because once a pokemon is entered we run through the if statement which renders the  animation.

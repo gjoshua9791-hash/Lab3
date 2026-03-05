@@ -14,6 +14,10 @@ export default function HomeScreen() {
     error={c.error}
     pokemon={c.pokemon}
     onSearch={c.search}
+    favorites={c.favorites}
+    isFavorite={c.isFavorite}
+    onToggleFavorite={c.toggleFavorite}
+    onLoadFavorite={c.loadFavorite}
     />
   );
 }

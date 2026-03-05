@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { Pokemon } from '@/src/models/Pokemon';
 import { fetchPokemonByName } from "@/src/services/pokemonApi";
 
@@ -7,9 +7,16 @@ export function usePokemonController() {
     const [pokemon, setPokemon] = useState<Pokemon | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [favorites, setFavorites] = useState<string[]>([]);
+
+    const isFavorite = useMemo(() => {
+        if (!pokemon) return false;
+        return favorites.includes(pokemon.name.toLowerCase());
+    }, [pokemon, favorites]);
+    
 
     async function search() {
-        const q = pokemonName.trim();
+        const q = pokemonName.trim().toLowerCase();
 
         if (!q) {
             setError("Please enter a Pokemon name.");
@@ -30,6 +37,35 @@ export function usePokemonController() {
         }
     }
 
+    async function loadFavorite(name: string) {
+        const q = name.trim().toLowerCase();
+        setPokemonName(q);
+        setLoading(true);
+        setError("");
+        setPokemon(null);
+
+        try{
+            const result = await fetchPokemonByName(q);
+            setPokemon(result);
+        } catch(err: any) {
+            setError(err.message || "An Error Occurred.");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+        function toggleFavorite() {
+            if(!pokemon) return;
+            const name= pokemon.name.toLowerCase();
+
+            setFavorites((prev) => {
+                if(prev.includes(name)){
+                    return prev.filter((n) => n !== name);
+                }
+                return [...prev, name];
+            });
+            }
+
     return {
         pokemonName,
         setPokemonName,
@@ -37,6 +73,10 @@ export function usePokemonController() {
         loading,
         error,
         search,
+        favorites,
+        isFavorite,
+        toggleFavorite,
+        loadFavorite,
     };
 
 }

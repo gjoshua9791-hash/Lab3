@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, Button, Image, StyleSheet, Text, TextInput, View, } from "react-native";
+import { ActivityIndicator, Button, Image, Pressable, StyleSheet, Text, TextInput, View, } from "react-native";
 import type { Pokemon } from "@/src/models/Pokemon";
 
 type Props = {
@@ -12,6 +12,10 @@ type Props = {
 
     onSearch: () => void;
 
+    favorites: string[];
+    isFavorite: boolean;
+    onToggleFavorite: () => void;
+    onLoadFavorite: (name:string) => void;
 };
 
 export function PokemonView(props: Props) {
@@ -36,6 +40,7 @@ export function PokemonView(props: Props) {
           </View>)}
         {!!props.error && <Text style={styles.error}>{props.error}</Text>}  
         {props.pokemon && (
+            <>
            <View style={styles.resultCard}>
             <Text style={styles.pokeName}>{props.pokemon.name}</Text>
 
@@ -49,11 +54,41 @@ export function PokemonView(props: Props) {
 
           <Text style={styles.label}>Moves:</Text>
           <Text>{props.pokemon.moves.join(", ")}</Text>
+
+          <View style={{ marginTop: 10, width: "100%" }}>
+            <Button
+                title={props.isFavorite ? "Unfavorite" : "Favorite"}
+                onPress={props.onToggleFavorite}
+                />
           </View>
-          )}
+        </View>
+
+    <View style={styles.favoritesSection}>
+      <Text style={styles.label}>Favorites:</Text>
+
+      {props.favorites.length === 0 ? (
+        <Text style={{ opacity: 0.7 }}>No Favorites Yet.</Text>
+      ) : (
+        <View style={{ width: "100%", gap: 8 }}>
+          {props.favorites.map((name) => (
+            <Pressable
+              key={name}
+              onPress={() => props.onLoadFavorite(name)}
+              style={styles.favoriteItem}
+            >
+              <Text style={{ textTransform: "capitalize" }}>
+                {name}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+      )}
     </View>
-  );
-}
+  </>
+)}
+ </View>
+    );
+    }
 
 const styles = StyleSheet.create({
   container: {
@@ -101,4 +136,16 @@ const styles = StyleSheet.create({
     marginTop: 6,
     fontWeight: "700",
   },
+  favoritesSection: {
+    width: "100%",
+    marginTop: 10,
+    gap: 8,
+},
+favoriteItem: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#eee",
+    borderRadius: 10,
+    padding: 10,
+},
 });

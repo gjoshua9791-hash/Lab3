@@ -71,3 +71,5 @@ Join our community of developers creating universal apps.
 17) The controller is better than a view for input validation because the view should only be focused on the UI and what's displayed, not how to handle errors and data.
 18) The props that the view needs are pokemonName, setPokemonName, loading, error, pokemon, and onSearch.
 19) If the view called the API directly then we'd be mixing the UI logic with the fetching logic again and the it defeats the purpose of the MVC which is supposed to separate all the logic for each component.
+20) Favorites should live in the controller and not the view because the view only handles UI logic and the logic to toggle a favorite and store it in a list is handled behind the scenes so this keeps them separate.
+21) Derived state for isFavorite means that its created from both pokemon and favorites so it's derived from the two. 

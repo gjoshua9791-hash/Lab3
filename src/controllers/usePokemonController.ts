@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import type { Pokemon } from '@/src/models/Pokemon';
 import { fetchPokemonByName } from "@/src/services/pokemonApi";
+import { loadFavorites, saveFavorites } from "@/src/services/favoritesStorage";
+import { useEffect } from 'react';
 
 export function usePokemonController() {
     const [pokemonName, setPokemonName] = useState("");
@@ -65,6 +67,21 @@ export function usePokemonController() {
                 return [...prev, name];
             });
             }
+
+        useEffect(() => {
+            async function init() {
+                const saved = await loadFavorites();
+                setFavorites(saved);
+            }
+            init();
+        }, []);
+    
+        useEffect(() => {
+            async function persist() {
+                await saveFavorites(favorites);
+            }
+            persist();
+        }, [favorites]);
 
     return {
         pokemonName,
